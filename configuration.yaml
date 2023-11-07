@@ -8,13 +8,18 @@ frontend:
 tts:
   - platform: google_translate
   
-# test
-# automation: !include automations.yaml
-# script: !include scripts.yaml
-# scene: !include scenes.yaml
 
-group: !include_dir_merge_named group
-automation: !include_dir_merge_list automation
+
+  
+# My own handmade automations
+automation manual: !include_dir_merge_list automation
+# Automations I create in the UI
+automation ui: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+
+
 
 
 ffmpeg:
