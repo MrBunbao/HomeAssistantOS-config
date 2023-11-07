@@ -90,6 +90,15 @@ panel_custom:
     embed_iframe: true
     require_admin: true
 
+  # LOGS
+  - name: panel_LOGS
+    sidebar_title: \>LOGS\<
+    sidebar_icon: mdi:toy-brick-marker-outline
+    url_path: "config/logs"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
 recorder:
   purge_keep_days: 2
 
