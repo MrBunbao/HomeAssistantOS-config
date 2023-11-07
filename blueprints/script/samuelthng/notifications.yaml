@@ -1,0 +1,262 @@
+blueprint:
+  name: "\U0001F514 Notification with Confirm, Dismiss and Timeout"
+  description: "### [\U0001F517 Github Link](https://github.com/samuelthng/t-house-blueprints/blob/main/notifications.yaml)\n[![Open
+    your Home Assistant instance and show the blueprint import dialog with a specific
+    blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fsamuelthng%2Ft-house-blueprints%2Fblob%2Fmain%2Fnotifications.yaml)\n\n---\n###
+    Version: 1.3\n*Forked from Home Assistant's [Confirmable Notifications](https://github.com/home-assistant/core/blob/master/homeassistant/components/script/blueprints/confirmable_notification.yaml)*\n\n---\n##
+    Features:\n  - \U0001F4F2 Sends a notification to a device with companion app
+    installed.\n  - ✅ Confirm button with custom label and actions\n  - ❌ Dismiss
+    button with custom label and actions\n  - ⌛️ Timeout actions with custom duration,
+    fired if no `confirm` or `dismiss` response received.\n  - \U0001F9F9 Dismiss
+    notification if no response received after timeout duration.\n\n---\n## Example
+    usage:\n  When the last user leaves home, send a notification to last user:\n
+    \ - Title: `My Awesome Home`\n  - Message: `Turning off lights and appliances
+    in 5 minutes`\n  - Confirm Text: `Leave it on`\n  - Confirm Action: `Do nothing`\n
+    \ - Dismiss Text: `Turn off now`\n  - Dismiss Action: `Run turn off script`\n
+    \ - Timeout Duration: `5 minutes`\n  - Timeout Action: `Run turn off script`\n
+    \ - Clear on Timeout: `Clear Notification`\n\n---\n## Changelog\n### Version 1.3.1
+    - *10 Jun 2023*\n  - Fixed: `Enable Icon Color`\n  - Updated: `Icon Color` hex
+    template\n\n### Version 1.3 - *9 Jun 2023*\n  - Fixed: [Incorrect property used
+    for timeout enablement](https://github.com/samuelthng/t-house-blueprints/pull/2).\n
+    \ - Added: Icon Color picker - ❗Breaking Change❗ \n  - Added: [Notification Link](https://community.home-assistant.io/t/notification-with-confirm-dismiss-and-timeout/551552/16)
+    - set a redirection link when you tap on the notification.\n  - Added: [Device
+    side notification clearing](https://community.home-assistant.io/t/notification-with-confirm-dismiss-and-timeout/551552/16)
+    - clearing notifications will no longer get stuck!\n\nAgain, thanks to joe.cole1
+    for the insights in this minor release.\nAlso, thanks to [RemyyB](https://github.com/RemyyB)
+    for identifying the incorrect variable and raising a PR, sorry for taking a week
+    to fix this.\n_(\U0001F91E\U0001F3FB Color picker is easy enough to configure,
+    so it shouldn't be absolutely breaking to warrant a major)_\n### Version 1.2 -
+    *30 May 2023*\n  - Added: `Icon` and `Icon color` (Android Only) - [Huge thanks
+    to joe.cole1](https://community.home-assistant.io/t/notification-with-confirm-dismiss-and-timeout/551552/4)\n
+    \ - Added: `Enable Timeout`, controls command response timeout feature - [Again,
+    huge thanks to joe.cole1 for the insight](https://community.home-assistant.io/t/notification-with-confirm-dismiss-and-timeout/551552/12)\n\n###
+    Version 1.1 - *25 March 2023*\n  - Updated: `Clear on Timeout` as boolean field\n
+    \ - Fixed: `Persistent` notifications not working\n  - Fixed: `Clear on Timeout`
+    did not clear if a timeout happened\n"
+  domain: script
+  source_url: https://github.com/samuelthng/t-house-blueprints/blob/main/notifications.yaml
+  input:
+    notify_device:
+      name: "\U0001F4F2 Device to notify"
+      description: Device needs to run the official Home Assistant app to receive
+        notifications.
+      selector:
+        device:
+          integration: mobile_app
+          multiple: false
+    title:
+      name: "\U0001F3F7️ Title"
+      description: The title of the button shown in the notification.
+      default: ''
+      selector:
+        text: {}
+    message:
+      name: "\U0001F4AC Message"
+      description: The message body
+      selector:
+        text: {}
+    icon:
+      name: "\U0001F642 Icon - \U0001F916 Android"
+      description: 'Optional: Custom icon for this notification.'
+      default: ''
+      selector:
+        icon: {}
+    enable_icon_color:
+      name: "\U0001F3A8 Use Icon Color - \U0001F916 Android"
+      description: 'Optional: If disabled, uses default icon color'
+      default: false
+      selector:
+        boolean: {}
+    icon_color:
+      name: "\U0001F3A8 Icon Color - \U0001F916 Android"
+      description: 'Optional: Custom icon color for this notification.'
+      default:
+      - 102
+      - 186
+      - 240
+      selector:
+        color_rgb: {}
+    tag:
+      name: "\U0001F516 Tag"
+      description: 'Recommended: Used for unique identification of the notification.'
+      selector:
+        text: {}
+    confirm_text:
+      name: ✅ Confirmation Text
+      description: Text to show on the confirmation button
+      default: Confirm
+      selector:
+        text: {}
+    confirm_action:
+      name: ✅ Confirmation Action
+      description: 'Optional: Action to run when notification is confirmed'
+      default: []
+      selector:
+        action: {}
+    dismiss_text:
+      name: ❌ Dismiss Text
+      description: Text to show on the dismiss button
+      default: Dismiss
+      selector:
+        text: {}
+    dismiss_action:
+      name: ❌ Dismiss Action
+      description: 'Optional: Action to run when notification is dismissed'
+      default: []
+      selector:
+        action: {}
+    enable_timeout:
+      name: ⌛️ Enable Timeout
+      description: ⚠️ If disabled, script will wait for response indefinitely until
+        the next time it is triggered.
+      default: true
+      selector:
+        boolean: {}
+    timeout:
+      name: ⌛️ Timeout Duration
+      description: Amount of time to wait for a confirm/dismiss response before firing
+        timeout action.
+      selector:
+        duration:
+          enable_day: false
+    timeout_action:
+      name: ⌛️ Timeout Action
+      description: 'Optional: Action to run when notification response is timed out.'
+      default: []
+      selector:
+        action: {}
+    clear_on_timeout:
+      name: "\U0001F9F9 Clear notification on timeout - \U0001F516 Tag Required"
+      description: Dismiss the notification after action selection times out.
+      default: false
+      selector:
+        boolean: {}
+    persist:
+      name: "\U0001F6A9 Persistent Notification - \U0001F916 Android, \U0001F516 Tag
+        Required"
+      description: Ensures that notification cannot be dismissed by swiping away.
+      default: false
+      selector:
+        boolean: {}
+    notification_link:
+      name: "\U0001F517 Notification Link"
+      description: 'Optional: Link to navigate to upon clicking the notification.
+        https://companion.home-assistant.io/docs/notifications/notifications-basic/#opening-a-url'
+      default: ''
+      selector:
+        text: {}
+    channel:
+      name: "\U0001F4E3 Notification Channel - \U0001F916 Android"
+      description: 'Optional: Defines the channel, to be used with Importance. Relates
+        to the importance of the notification.'
+      default: General
+      selector:
+        text: {}
+    importance:
+      name: "❕ Notification Channel Importance - \U0001F916 Android"
+      description: https://companion.home-assistant.io/docs/notifications/notifications-basic/#notification-channel-importance
+      default: default
+      selector:
+        select:
+          options:
+          - label: Urgent (Makes a sound with heads-up notification)
+            value: high
+          - label: Default (Makes a sound)
+            value: default
+          - label: Silent (Makes no sound)
+            value: low
+          - label: Low (Makes no sound, doesn't appear in status bar)
+            value: min
+          multiple: false
+          custom_value: false
+    interruption_level:
+      name: ❕ Interruption Level -  iOS
+      description: https://companion.home-assistant.io/docs/notifications/notifications-basic/#interruption-level
+      default: active
+      selector:
+        select:
+          options:
+          - label: Silent (Makes no sound, does not wake screen)
+            value: passive
+          - label: Default
+            value: active
+          - label: Important (Overrides Focus)
+            value: time-sensitive
+          - label: Critical (Overrides Focus and Mute, restricted features)
+            value: critical
+          multiple: false
+          custom_value: false
+mode: restart
+sequence:
+- alias: Set up variables
+  variables:
+    action_confirm: '{{ ''CONFIRM_'' ~ context.id }}'
+    action_dismiss: '{{ ''DISMISS_'' ~ context.id }}'
+    enable_timeout: !input enable_timeout
+    clear_on_timeout: !input clear_on_timeout
+    persist: !input persist
+    timeout: !input timeout
+    timeout_seconds: '{{ (timeout.hours * 60 + timeout.minutes) * 60 + timeout.seconds
+      }}'
+    enable_icon_color: !input enable_icon_color
+    icon_color_selector: !input icon_color
+    icon_color_hex: '{{ "#{:02x}{:02x}{:02x}".format(icon_color_selector[0], icon_color_selector[1],
+      icon_color_selector[2]) }}'
+- alias: Send notification
+  domain: mobile_app
+  type: notify
+  device_id: !input notify_device
+  title: !input title
+  message: !input message
+  data:
+    actions:
+    - action: '{{ action_confirm }}'
+      title: !input confirm_text
+    - action: '{{ action_dismiss }}'
+      title: !input dismiss_text
+    tag: !input tag
+    persistent: !input persist
+    channel: !input channel
+    importance: !input importance
+    push:
+      interruption-level: !input interruption_level
+    notification_icon: !input icon
+    color: '{{ iif(enable_icon_color, icon_color_hex, )}}'
+    clickAction: !input notification_link
+    url: !input notification_link
+    timeout: '{{ iif(enable_timeout and clear_on_timeout, timeout_seconds, )}}'
+- if:
+  - alias: Check timeout enabled
+    condition: template
+    value_template: '{{ enable_timeout == true }}'
+  then:
+  - alias: Awaiting response with Timeout
+    wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_confirm }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_dismiss }}'
+    timeout: !input timeout
+    continue_on_timeout: true
+  else:
+  - alias: Awaiting response indefinitely
+    wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_confirm }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_dismiss }}'
+- choose:
+  - conditions: '{{ wait.trigger.event.data.action == action_confirm }}'
+    sequence: !input confirm_action
+  - conditions: '{{ wait.trigger.event.data.action == action_dismiss }}'
+    sequence: !input dismiss_action
+  - conditions: '{{ wait.trigger == none }}'
+    sequence: !input timeout_action

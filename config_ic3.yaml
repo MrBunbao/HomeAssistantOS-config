@@ -1,0 +1,18 @@
+#The devices parameter specifies all of the phones (or other devices) to be tracked. It can be in the configuration.yaml or the config_ic3.yaml file. Each phone is defined using the - device_name: [devicename] parameter. Additional parameters specify other information about the phone. The parameters are:
+devices:
+  - device_name: Andys iPhone
+    email: !secret ic3_email
+    name: Andy
+  #  - device_name: mr_daos5_airpods_pro
+  #    name: Andy's Airpods Pro
+  #  - device_name: andys_apple_watch_ultra
+  #    name: Andy's Apple Watch
+
+  - device_name: Shannons iPhone
+    email: !secret ic3_shannon_email
+    name: Shannon
+#  - device_name: Andys iPad
+#    email: andydao92@me.com
+#    name: Andy
+
+# gps_accuracy_threshold: 60

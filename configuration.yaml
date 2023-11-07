@@ -1,0 +1,101 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+frontend:
+  # extra_mdule_url:
+  # - /local/custom.js
+  # - /local/card-mod.js
+# hi
+# Text to speech
+tts:
+  - platform: google_translate
+# test
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+ffmpeg:
+
+panel_custom:
+  # Restart Sidebar Panel
+  - name: ha_restart
+    sidebar_title: Restart
+    sidebar_icon: mdi:restart
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "developer-tools/yaml?shouldRestart=1"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+
+  # Integrations Sidebar Panel
+  - name: panel_integrations
+    sidebar_title: Integrations
+    sidebar_icon: mdi:audio-input-rca
+    url_path: "config/integrations"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
+  # Devices Sidebar Panel
+  - name: panel_devices
+    sidebar_title: Devices
+    sidebar_icon: mdi:devices
+    url_path: "config/devices/dashboard"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
+  # Entities Sidebar Panel
+  - name: panel_entities
+    sidebar_title: Entities
+    sidebar_icon: mdi:monitor-cellphone-star
+    url_path: "config/entities"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
+  # Addons Sidebar Panel
+  - name: panel_addons
+    sidebar_title: Addons
+    sidebar_icon: mdi:checkbox-blank-badge
+    url_path: "hassio/store"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
+  # Services Sidebar Panel
+  - name: panel_services
+    sidebar_title: Services
+    sidebar_icon: mdi:toolbox-outline
+    url_path: "developer-tools/service"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
+  # Automations Sidebar Panel
+  - name: panel_automations
+    sidebar_title: Automations
+    sidebar_icon: mdi:toolbox-outline
+    url_path: "config/automation/dashboard"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
+  # Developer States
+  - name: panel_devtoolstate
+    sidebar_title: Dev Tools States
+    sidebar_icon: mdi:toolbox-outline
+    url_path: "developer-tools/state"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+
+recorder:
+  purge_keep_days: 2
+
+#HTML5 Push Notifications
+notify:
+  - platform: html5
+    vapid_pub_key: !secret html5_valid_pub_key
+    vapid_prv_key: !secret html5_vapid_prv_key
+    vapid_email: !secret html5_vapid_email
