@@ -11,8 +11,4 @@ devices:
   - device_name: Shannons iPhone
     email: !secret ic3_shannon_email
     name: Shannon
-#  - device_name: Andys iPad
-#    email: andydao92@me.com
-#    name: Andy
-
 # gps_accuracy_threshold: 60
