@@ -1,13 +1,34 @@
-# Frenck
+# Original from @Frenck
+
+
+
 # Generic ignores
-*.log
-*.log.*
+*.DISABLED
+*.pid
+*.xml
+*.csr
+*.crt
+*.key
+*.conf
+*.db*
+*.log*
 *.db
-*.db-shm
-*.db-wal
 *.pyc
 ._*
 __pycache__
+*.sqlite
+.google.token
+.uuid
+home-assistant_v2
+home-assistant_v2.*
+alexa_media
+.homekit.state
+known_devices.yaml
+ip_bans.yaml
+ipchange.yaml
+production_auth.json
+OZW_Log.txt
+
 
 # Directory (contents) ignores
 .cloud
@@ -15,12 +36,13 @@ __pycache__
 deps
 
 # Specific file ignores
+core.*
 core
 image
 ip_bans.yaml
 secrets.yaml
 
-# Build-in blueprints ignores
+# Build-in BLUEPRINT ignores
 blueprints/*/homeassistant
 
 # ESPHome ignores
@@ -47,3 +69,4 @@ www/community
 
 # Temporary ignores
 .old_config
+
