@@ -35,6 +35,7 @@ notebooks
 .vscode
 .theia
 .Trash*
+.pem
 
 # Ignore vendored stuff
 custom_components
