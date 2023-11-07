@@ -128,17 +128,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-[commits-shield]: https://img.shields.io/github/commit-activity/y/MrBunbao/homeassistant-config.svg
-[commits]: https://github.com/MrBunbao/homeassistant-config/commits/master
-[contributors]: https://github.com/MrBunbao/homeassistant-config/graphs/contributors
+[commits-shield]: https://img.shields.io/github/commit-activity/y/MrBunbao/homeassistantos-config.svg
+[commits]: https://github.com/MrBunbao/homeassistantos-config/commits/master
+[contributors]: https://github.com/MrBunbao/homeassistantos-config/graphs/contributors
 [frenck]: https://github.com/frenck
 [actions-shield]: https://github.com/MrBunbao/homeassistant-config/workflows/Home%20Assistant%20CI/badge.svg
-[actions]: https://github.com/MrBunbao/homeassistant-config/actions
+[actions]: https://github.com/MrBunbao/homeassistantos-config/actions
 [home-assistant]: https://home-assistant.io
-[issue]: https://github.com/MrBunbao/homeassistant-config/issues
-[license-shield]: https://img.shields.io/github/license/MrBunbao/homeassistant-config.svg
+[issue]: https://github.com/MrBunbao/homeassistantos-config/issues
+[license-shield]: https://img.shields.io/github/license/MrBunbao/homeassistantos-config.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
-[last-commit-shield]: https://img.shields.io/github/last-commit/MrBunbao/homeassistant-config.svg
-[stars-shield]: https://img.shields.io/github/stars/MrBunbao/homeassistant-config.svg?style=social&label=Stars
-[forks-shield]: https://img.shields.io/github/forks/MrBunbao/homeassistant-config.svg?style=social&label=Forks
-[watchers-shield]: https://img.shields.io/github/watchers/MrBunbao/homeassistant-config.svg?style=social&label=Watchers
+[last-commit-shield]: https://img.shields.io/github/last-commit/MrBunbao/homeassistantos-config.svg
+[stars-shield]: https://img.shields.io/github/stars/MrBunbao/homeassistantos-config.svg?style=social&label=Stars
+[forks-shield]: https://img.shields.io/github/forks/MrBunbao/homeassistantos-config.svg?style=social&label=Forks
+[watchers-shield]: https://img.shields.io/github/watchers/MrBunbao/homeassistantos-config.svg?style=social&label=Watchers
