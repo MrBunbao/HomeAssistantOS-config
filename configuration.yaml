@@ -3,17 +3,19 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 frontend:
-  # extra_mdule_url:
-  # - /local/custom.js
-  # - /local/card-mod.js
-# hi
+
 # Text to speech
 tts:
   - platform: google_translate
+  
 # test
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
+# automation: !include automations.yaml
+# script: !include scripts.yaml
+# scene: !include scenes.yaml
+
+group: !include_dir_merge_named group
+automation: !include_dir_merge_list automation
+
 
 ffmpeg:
 
