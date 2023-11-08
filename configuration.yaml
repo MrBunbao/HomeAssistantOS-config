@@ -3,12 +3,14 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 frontend:
+python_script:
 
 # Text to speech
 tts:
   - platform: google_translate
   
-
+logger:
+  default: info
 
   
 # My own handmade automations
@@ -18,8 +20,9 @@ automation ui: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-
-
+# INPUT BOOLEANS 
+# NEEDED https://www.home-assistant.io/integrations/input_boolean/
+input_boolean:
 
 
 ffmpeg:

@@ -1,0 +1,21 @@
+######################################################################
+##  Flash all the lights!
+######################################################################
+
+
+- alias: 'Flash all_lights'
+  id: 704f77f4-dcb1-4c49-83c5-b499d9b8f678
+  trigger:
+    - platform: state
+      entity_id: input_boolean.flash
+      to: 'on'
+      from: 'off'
+
+  action:
+    - service: light.turn_on
+      entity_id: all
+      data:
+        flash: long
+
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.flash

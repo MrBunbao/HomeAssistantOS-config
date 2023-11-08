@@ -8,6 +8,7 @@ CHANNEL = 25
 PANID = "4b28"
 EXTPANID = "20d0f9bab1c84eb7"
 NETWORK_KEY = "a87099faf2a869a305132e6ff7d881e6"
+PSKC = "1edc0b1705a1948fd12739931f4b4068"
 TIMESTAMP = b'\x00\x00\x00\x00\x00\x03\x00\x00'
 
 channel = MeshcopTLVItem(tag=0, data=CHANNEL.to_bytes(length=3, byteorder='big'))

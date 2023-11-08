@@ -18,181 +18,8 @@ play_disney_cruise_line_chime_homepod_mini:
         media_content_id: media-source://media_source
   mode: single
   icon: mdi:music-note
-notify_andy_iphone:
-  alias: notify_andy_iphone
-  sequence:
-  - service: notify.mobile_app_andys_iphone
-    data:
-      data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-    alias: Andy - Send Message
-  mode: single
-  icon: mdi:message-alert-outline
-'1692508409992':
-  alias: Garage Door - Open
-  sequence:
-  - condition: state
-    entity_id: input_boolean.ha_started_flag
-    state: 'on'
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-  - service: cover.open_cover
-    data: {}
-    target:
-      entity_id: cover.garage_door
-  mode: single
-  icon: mdi:garage-open
-'1692634943591':
-  alias: Garage Door - Show Status
-  sequence:
-  - service: notify.mobile_app_andys_iphone
-    data:
-      message: DoorStatus={{states("cover.garage_door")}},   Distance={{states("sensor.andys_iphone_icloud3_v3_zone_distance")}},   Zone={{states("sensor.andys_iphone_icloud3_v3_zone_name")
-        }}
-  mode: single
-  icon: mdi:message-alert-outline
-'1692637723166':
-  alias: Garage Door - Close
-  sequence:
-  - condition: state
-    entity_id: input_boolean.ha_started_flag
-    state: 'on'
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-  - condition: state
-    entity_id: cover.garage_door
-    state: open
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 15
-    enabled: true
-  - service: cover.close_cover
-    data: {}
-    target:
-      entity_id: cover.garage_door
-    enabled: true
-  - service: notify.mobile_app_andys_iphone
-    data:
-      title: From Bao
-      message: Closing garage, as you said.
-  mode: single
-  icon: mdi:garage
-'1692640751447':
-  alias: Andy - Confirmable Notification for Walk
-  use_blueprint:
-    path: homeassistant/confirmable_notification.yaml
-    input:
-      notify_device: 2f5cc41e528f8b61a4f24e1907503544
-      title: 'Wait! '
-      message: Do you want to close the garage for this walk?
-      confirm_text: Close Garage
-      confirm_action:
-      - service: cover.close_cover
-        data: {}
-        target:
-          entity_id: cover.garage_door
-      dismiss_text: Do Not Close
-      dismiss_action:
-      - service: notify.mobile_app_andys_iphone
-        data:
-          message: No worries, enjoy your walk. I'll leave the garage open.
-  icon: mdi:account-question-outline
-shannon_confirmable_notification_for_walk:
-  alias: Shannon - Confirmable Notification for Walk
-  use_blueprint:
-    path: homeassistant/confirmable_notification.yaml
-    input:
-      notify_device: 835ceff6c055fb2276d7c3c2cfbba177
-      title: Wait! Listen!
-      message: Do you want to close the garage for this walk?
-      confirm_text: Close Garage
-      confirm_action:
-      - service: cover.close_cover
-        data: {}
-        target:
-          entity_id: cover.garage_door
-      dismiss_text: Do Not Close
-      dismiss_action:
-      - service: notify.mobile_app_shannons_iphone
-        data:
-          title: Not closing garage
-          message: Sounds good! I'll keep it open.
-  icon: mdi:account-question-outline
-andy_notification_with_confirm_dismiss_and_timeout:
-  alias: "\U0001F514 Andy - Garage Notification with Confirm, Dismiss and Timeout"
-  use_blueprint:
-    path: samuelthng/notifications.yaml
-    input:
-      notify_device: 2f5cc41e528f8b61a4f24e1907503544
-      title: Close garage?
-      tag: andyclosegarageconfirm
-      timeout:
-        hours: 0
-        minutes: 3
-        seconds: 0
-      timeout_action:
-      - service: notify.mobile_app_andys_iphone
-        data:
-          title: No response given in 3 minutes
-          message: Oy mate, did you fall asleep? Not actions this time.
-      clear_on_timeout: true
-      message: Would you like to close the garage? Pull Down for Options
-      confirm_action:
-      - service: cover.close_cover
-        data: {}
-        target:
-          entity_id: cover.garage_door
-      persist: false
-      dismiss_text: Nah Fam
-notification_to_clock_in_work:
-  alias: "\U0001F514 Notification to Clock In Work"
-  use_blueprint:
-    path: samuelthng/notifications.yaml
-    input:
-      notify_device: 2f5cc41e528f8b61a4f24e1907503544
-      title: Clock in?
-      message: Click here!
-      tag: andyclockinconfirm
-      notification_link: https://utah.kronos.net/wfc/logon
-      enable_timeout: true
-      timeout:
-        hours: 0
-        minutes: 3
-        seconds: 0
-shannon_notification_with_confirm_dismiss_and_timeout:
-  alias: "\U0001F514 Shannon - Garage Notification with Confirm, Dismiss and Timeout"
-  use_blueprint:
-    path: samuelthng/notifications.yaml
-    input:
-      notify_device: 835ceff6c055fb2276d7c3c2cfbba177
-      title: Close garage?
-      tag: shannonclosegarageconfirm
-      timeout:
-        hours: 0
-        minutes: 3
-        seconds: 0
-      timeout_action:
-      - service: notify.mobile_app_shannons_iphone
-        data:
-          title: 3 minutes have gone by
-          message: You must've forgotten about me. Okay, nothing will happen.
-      clear_on_timeout: true
-      message: Would you like to close the garage? Pull down for options
-      confirm_action:
-      - service: cover.close_cover
-        data: {}
-        target:
-          entity_id: cover.garage_door
-      persist: false
-      dismiss_text: Nah Fam. <3
 toggle_garage:
-  alias: Toggle Garage
+  alias: (via ActionButton) Toggle Garage
   sequence:
   - service: cover.toggle
     data: {}
@@ -211,20 +38,21 @@ toggle_garage:
     - service: notify.mobile_app_andys_iphone_15
       data:
         title: Bao Butler
-        message: Opening garage.
+        message: Opening garage via ActionButton
     else:
     - service: notify.mobile_app_andys_iphone_15
       data:
         title: Bao Butler
-        message: Closing garage.
+        message: Closing garage via ActionButton
   mode: single
-  icon: mdi:garage-open-variant
+  icon: mdi:garage-alert-variant
 toggle_tv_power:
-  alias: Toggle TV Power
+  alias: (via ActionButton) Toggle TV Power
   sequence:
   - service: remote.toggle
     data: {}
     target:
-      entity_id: remote.den
+      entity_id:
+      - remote.theater_appletv_remote
   mode: single
   icon: mdi:remote-tv
