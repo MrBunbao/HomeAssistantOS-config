@@ -1,9 +1,8 @@
-
-
 # Loads default set of integrations. Do not remove.
 default_config:
 frontend:
-python_script:
+
+
 
 # Text to speech
 tts:
@@ -12,7 +11,7 @@ tts:
 logger:
   default: info
 
-  
+
 # My own handmade automations
 automation manual: !include_dir_merge_list automation
 # Automations I create in the UI
@@ -24,14 +23,21 @@ scene: !include scenes.yaml
 # NEEDED https://www.home-assistant.io/integrations/input_boolean/
 input_boolean:
 
+wake_on_lan:
+
+# Example configuration.yaml entry
+switch:
+  - platform: wake_on_lan
+    mac: b4:2e:99:4b:72:3b
+    host: 192.168.1.54
+    name: "AndyHomePC"
 
 ffmpeg:
 
 # HTTP
 # https://www.home-assistant.io/integrations/http/
 http:
-  ip_ban_enabled: true
-  login_attempts_threshold: 5
+  ip_ban_enabled: false
 
 panel_custom:
   # Restart Sidebar Panel

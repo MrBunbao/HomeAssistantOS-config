@@ -1,23 +1,3 @@
-play_disney_cruise_line_chime_homepod_mini:
-  alias: Play Disney Cruise Line Chime (Homepod Mini)
-  sequence:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.living_room_homepod_mini
-    data:
-      media_content_id: media-source://media_source/local/Ship Announcement.mp3
-      media_content_type: audio/mpeg
-    metadata:
-      title: Ship Announcement.mp3
-      thumbnail:
-      media_class: music
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://media_source
-  mode: single
-  icon: mdi:music-note
 toggle_garage:
   alias: (via ActionButton) Toggle Garage
   sequence:
@@ -29,7 +9,7 @@ toggle_garage:
     if:
     - condition: state
       entity_id: cover.garage_door
-      state: opening
+      state: open
       for:
         hours: 0
         minutes: 0
@@ -38,12 +18,12 @@ toggle_garage:
     - service: notify.mobile_app_andys_iphone_15
       data:
         title: Bao Butler
-        message: Opening garage via ActionButton
+        message: Closing garage door via ActionButton
     else:
     - service: notify.mobile_app_andys_iphone_15
       data:
         title: Bao Butler
-        message: Closing garage via ActionButton
+        message: Opening garage door via ActionButton
   mode: single
   icon: mdi:garage-alert-variant
 toggle_tv_power:

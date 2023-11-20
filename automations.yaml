@@ -8,12 +8,9 @@
     to: Home
   - platform: state
     entity_id:
-    - sensor.shannons_iphone_icloud3_v3_zone_name
+    - sensor.shannons_iphone_icloud3_v3_zone_fname
     to: Home
-  - platform: state
-    entity_id:
-    - sensor.shannons_iphone_ssid
-    to: NotTheWiFiYoureLookingFor
+    enabled: false
   - platform: device
     device_id: 080a866185d8aca817cbb2b42c290b23
     domain: device_tracker
@@ -52,16 +49,8 @@
     to: Home
   - platform: state
     entity_id:
-    - sensor.andys_iphone_icloud3_v3_zone_name
+    - sensor.andys_iphone_icloud3_v3_zone_fname
     to: Home
-  - platform: state
-    entity_id:
-    - sensor.andys_iphone_15_ssid
-    to: NotTheWiFiYoureLookingFor
-  - platform: state
-    entity_id:
-    - sensor.andys_iphone_15_ssid
-    to: BaoIoT
   - platform: device
     device_id: e839b86e91bd70de7fd57892b38bad92
     domain: device_tracker
@@ -149,9 +138,12 @@
     state: home
     alias: Confirm Andy ZoneDistance:FromZone is home
   action:
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.andy_away_flag
-    alias: 'Andy Far Away Flag: Turn off'
+  - alias: 'Andy Far Away Flag: Turn off'
+    service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.andy_far_away_flag
   mode: single
 - id: '1692507094295'
   alias: Andy - Far Away Flag, Turn On
@@ -166,9 +158,12 @@
     state: home
     alias: Confirm Andy ZoneDistance:FromZone is home
   action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.andy_away_flag
-    alias: 'Andy Far Away Flag: Turn on'
+  - alias: 'Andy Far Away Flag: Turn on'
+    service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.andy_far_away_flag
   mode: single
 - id: '1692508484995'
   alias: HA - Started Flag, Set
@@ -266,8 +261,6 @@
       - update.home_assistant_core_update
       - update.home_assistant_operating_system_update
       - update.home_assistant_supervisor_update
-      - update.matter_server_update
-      - update.openthread_border_router_update
       mobile_app_device: d756f8bb367b2b5692b4b3c309ef1e59
       only_after: 06:00:00
       only_before: '20:00:00'
@@ -283,12 +276,48 @@
   - service: tts.cloud_say
     data:
       cache: true
-      entity_id: media_player.kitchen_homepod_mini
       message: 'Alert! Bueller and Hachi are hungry. Please, feed them or else they
         will wreck your place. Well, they might do that anyway. You have been warned. '
+      entity_id: media_player.kitchen
   mode: single
-- id: '1697166678525'
-  alias: Theater - Turn off Hue Strip TV Lights when Apple TV Status Standby
+- id: '1699585606904'
+  alias: Cruise Ship Announcement
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.kitchen_homepod_mini
+    data:
+      media_content_id: media-source://media_source/local/Ship Announcement.mp3
+      media_content_type: audio/mpeg
+    metadata:
+      title: Ship Announcement.mp3
+      thumbnail:
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://media_source
+  - service: tts.cloud_say
+    data:
+      entity_id: media_player.kitchen_homepod_mini
+      message: "Attention all delightful passengers, this is your Captain speaking.\n\nAs
+        we navigate these enchanting waters, I must share a secret as vast as the
+        sea itself. There’s someone special among us who has commandeered the ship
+        of my heart with her charm and grace.\n\nTo the one who makes every sunset
+        more radiant and every horizon a promise of adventure, know that my love for
+        you is as endless as the ocean and as timeless as the tides.\n\nWith you,
+        every journey is a fairytale. Here’s to our voyage of love, may it be as magical
+        and wondrous as the happiest place on earth.\n\nThank you for embarking on
+        this journey with me. Now, let's make waves of joy and cruise into a future
+        filled with love.\n\nCaptain over and out. ❤️\U0001F6A2"
+      cache: true
+  mode: single
+- id: '1699678247718'
+  alias: Hue play bars off when ATV turn off
   description: ''
   trigger:
   - platform: state
@@ -298,8 +327,7 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 20
-    from:
+      seconds: 5
   - platform: state
     entity_id:
     - media_player.theater_appletv
@@ -307,34 +335,35 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 20
-    from:
-  - platform: state
-    entity_id:
-    - media_player.theater_appletv
-    to: idle
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 20
-    from:
-  - platform: state
-    entity_id:
-    - media_player.theater_appletv
-    to: unavailable
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 20
-    from:
+      seconds: 5
   condition: []
   action:
-  - type: turn_off
-    device_id: b705ef4a36dc4a62ede5d11742d0d1bf
-    entity_id: f79208bb13b16b483e8246822b3422b5
-    domain: light
-  - type: turn_off
-    device_id: 47886827a196963ee17ba4e766fd0a7c
-    entity_id: 3744a022f6e75eb923e0471c1c16b526
-    domain: light
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.hue_play_bars
+  mode: single
+- id: '1699757335263'
+  alias: Bathroom Lights Unavailable (Status Off)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.bathroom_lights
+    to: unavailable
+  condition: []
+  action: []
+  mode: single
+- id: '1700030435113'
+  alias: WakeOnLAN
+  description: Turns on Andy's Office computer at home via Wake-On-Lan magic packets
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.wake_on_lan
+  action:
+  - service: wake_on_lan.send_magic_packet
+    data:
+      broadcast_port: 9
+      mac: b4-2e-99-4b-72-3b
   mode: single

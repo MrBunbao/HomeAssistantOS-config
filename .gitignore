@@ -43,7 +43,7 @@ ip_bans.yaml
 secrets.yaml
 
 # Build-in BLUEPRINT ignores
-blueprints/*/homeassistant
+
 
 # ESPHome ignores
 esphome/.*/
@@ -68,3 +68,23 @@ custom_components
 # Temporary ignores
 .old_config
 
+lutron_caseta-0512698d-ca.pem
+.gitignore
+.gitignore
+lutron_caseta-0512698d-cert.pem
+lutron_caseta-0512698d-key.pem
+tts/6fe0a0a42b99b0acc75df7b02cf05c6a1b86702f_en-ie_e09b5a0968_cloud.audiooutput.mp3
+tts/26c470aae9962d26476d4936a7976a5388db4a52_en-ie_e09b5a0968_cloud.audiooutput.mp3
+tts/58b14af682d790fc49a0d7e5615338e6387c8f05_vi-vn_e09b5a0968_cloud.audiooutput.mp3
+tts/87d4f42433a73bbf5a9397198a4c96173f8be1a3_en-ng_e09b5a0968_cloud.audiooutput.mp3
+tts/87d4f42433a73bbf5a9397198a4c96173f8be1a3_en-tz_e09b5a0968_cloud.audiooutput.mp3
+tts/5165c68d0fb100ea7bd1423b42abf5aef67c9eb0_vi-vn_e09b5a0968_cloud.audiooutput.mp3
+tts/6490d59b8f20ff4d247c734016cf7b3fd464fd67_en-ie_e09b5a0968_cloud.audiooutput.mp3
+tts/b76eb1ccf8c8821528ce99da5eeed2064744c1bf_en-tz_e09b5a0968_cloud.audiooutput.mp3
+tts/f76b740ca9b8b13c9daa9d0ef272e8ddd16193a6_en-ie_e09b5a0968_cloud.audiooutput.mp3
+tts/f76b740ca9b8b13c9daa9d0ef272e8ddd16193a6_en-nz_e09b5a0968_cloud.audiooutput.mp3
+tts/f76b740ca9b8b13c9daa9d0ef272e8ddd16193a6_en-tz_e09b5a0968_cloud.audiooutput.mp3
+tts/fdf8677fa6b9cf4b843a16f6dad1a43d521c79ef_en-hk_e09b5a0968_cloud.audiooutput.mp3
+tts/fdf8677fa6b9cf4b843a16f6dad1a43d521c79ef_en-ng_e09b5a0968_cloud.audiooutput.mp3
+tts/fdf8677fa6b9cf4b843a16f6dad1a43d521c79ef_vi-vn_e09b5a0968_cloud.audiooutput.mp3
+tts/fef433af5e420500921d4ad8639c0976b7f2f1f0_en-tz_e09b5a0968_cloud.audiooutput.mp3
