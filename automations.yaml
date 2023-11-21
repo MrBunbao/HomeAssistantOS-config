@@ -4,20 +4,13 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.shannons_iphone_icloud3_v3_badge
-    to: Home
-  - platform: state
-    entity_id:
     - sensor.shannons_iphone_icloud3_v3_zone_fname
     to: Home
-    enabled: false
-  - platform: device
-    device_id: 080a866185d8aca817cbb2b42c290b23
-    domain: device_tracker
-    entity_id: d8e6c987505369115832576708a399c3
-    type: enters
-    zone: zone.home
-    alias: Shannon enters home zone
+    enabled: true
+  - platform: numeric_state
+    entity_id:
+    - sensor.shannons_iphone_icloud3_v3_home_distance
+    below: 0.1
   condition:
   - condition: state
     entity_id: sensor.shannons_iphone_activity
@@ -45,18 +38,8 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.andys_iphone_icloud3_v3_badge
-    to: Home
-  - platform: state
-    entity_id:
     - sensor.andys_iphone_icloud3_v3_zone_fname
     to: Home
-  - platform: device
-    device_id: e839b86e91bd70de7fd57892b38bad92
-    domain: device_tracker
-    entity_id: 3930cf0355f73095f54dcea2e39ff6e1
-    type: enters
-    zone: zone.home
   - platform: numeric_state
     entity_id: sensor.andys_iphone_icloud3_v3_home_distance
     below: 0.1
