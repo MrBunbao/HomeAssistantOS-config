@@ -123,6 +123,14 @@ panel_custom:
     embed_iframe: true
     require_admin: true
 
+  # LOGBOOK PANEL
+  - name: panel_Logbook
+    sidebar_title: LOGBOOK
+    sidebar_icon: mdi:toy-brick-marker-outline
+    url_path: "/logbook"
+    embed_iframe: true
+    require_admin: true
+    
   # BLANK
   - name: panel_BLANK
     sidebar_title: ------------

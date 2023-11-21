@@ -4,13 +4,13 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.shannons_iphone_icloud3_v3_zone_fname
+    - sensor.shannons_iphone_icloud3_v3_zone
     to: Home
     enabled: true
   - platform: numeric_state
     entity_id:
     - sensor.shannons_iphone_icloud3_v3_home_distance
-    below: 0.1
+    below: 0.15
   condition:
   - condition: state
     entity_id: sensor.shannons_iphone_activity
@@ -19,14 +19,14 @@
     entity_id: cover.garage_door
     state: closed
   action:
-  - service: notify.mobile_app_shannons_iphone
-    data:
-      title: A message from future Hubby
-      message: Welcome to our beloved Home beautiful. <3
   - service: cover.open_cover
     data: {}
     target:
       entity_id: cover.garage_door
+  - service: notify.mobile_app_shannons_iphone
+    data:
+      title: A message from future Hubby
+      message: Welcome to our beloved Home beautiful. <3
   - service: notify.mobile_app_shannons_iphone
     data:
       title: A message from Hachi and Bueller
