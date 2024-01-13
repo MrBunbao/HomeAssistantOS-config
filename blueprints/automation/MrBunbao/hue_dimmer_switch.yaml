@@ -1,0 +1,215 @@
+blueprint:
+  name: Hue, Friends Of Hue switch, 4 button, all functions
+  description: >
+    HA version 2023.08 or newer
+
+    Works with all functions
+
+    Correct the problem of "short release" triggered on the same time as "long release"
+
+    If multible switches needing the same functionality, select multible 
+
+  domain: automation
+  input:
+    hue-switch-button1:
+      name: "Hue Switch button 1"
+      description: "Upper Left"
+      selector:
+        entity:
+          device_class: button
+          multiple: true 
+    hue-switch-button2:
+      name: "Hue Switch button 2"
+      description: "Lower Left"
+      selector:
+        entity:
+          device_class: button
+          multiple: true
+    hue-switch-button3:
+      name: "Hue Switch button 3"
+      description: "Upper Right"
+      selector:
+        entity:
+          device_class: button
+          multiple: true
+    hue-switch-button4:
+      name: "Hue Switch button 4"
+      description: "Lower Right"
+      selector:
+        entity:
+          device_class: button
+          multiple: true
+    button_1_short_release:
+      name: Short Release 1
+      description: Action to run on button upper-left short release
+      default: []
+      selector:
+        action: {}
+    button_2_short_release:
+      name: Short Release 2
+      description: Action to run on button lower-left short release
+      default: []
+      selector:
+        action: {}
+    button_3_short_release:
+      name: Short Release 3
+      description: Action to run on button upper-right short release
+      default: []
+      selector:
+        action: {}
+    button_4_short_release:
+      name: Short Release 4
+      description: Action to run on button lower-right short release
+      default: []
+      selector:
+        action: {}
+        
+    button_1_long_release:
+      name: Long Release 1
+      description: Action to run on button upper-left long release
+      default: []
+      selector:
+        action: {}
+    button_2_long_release:
+      name: Long Release 2
+      description: Action to run on button lower-left long release
+      default: []
+      selector:
+        action: {}
+    button_3_long_release:
+      name: Long Release 3
+      description: Action to run on button upper-right long release
+      default: []
+      selector:
+        action: {}
+    button_4_long_release:
+      name: Long Release 4
+      description: Action to run on button lower-right long release
+      default: []
+      selector:
+        action: {}
+
+    button_1_press:
+      name: Press 1
+      description: Action to run on button upper-left initial press
+      default: []
+      selector:
+        action: {}
+    button_2_press:
+      name: Press 2
+      description: Action to run on button lower-left initial press
+      default: []
+      selector:
+        action: {}
+    button_3_press:
+      name: Press 3
+      description: Action to run on button upper-right initial press
+      default: []
+      selector:
+        action: {}
+    button_4_press:
+      name: Press 4
+      description: Action to run on button lower-right initial press
+      default: []
+      selector:
+        action: {}
+
+    button_1_repeat:
+      name: Repeat 1
+      description: Action to run on button upper-left repeat
+      default: []
+      selector:
+        action: {}
+    button_2_repeat:
+      name: Repeat 2
+      description: Action to run on button lower-left repeat
+      default: []
+      selector:
+        action: {}
+    button_3_repeat:
+      name: Repeat 3
+      description: Action to run on button upper-right repeat
+      default: []
+      selector:
+        action: {}
+    button_4_repeat:
+      name: Repeat 4
+      description: Action to run on button lower-right repeat
+      default: []
+      selector:
+        action: {}
+
+mode: queued
+max: 10
+
+trigger:
+- platform: state
+  entity_id: !input 'hue-switch-button1'
+  id: B1
+- platform: state
+  entity_id: !input 'hue-switch-button2'
+  id: B2
+- platform: state
+  entity_id: !input 'hue-switch-button3'
+  id: B3
+- platform: state
+  entity_id: !input 'hue-switch-button4'
+  id: B4
+
+action:
+- variables:
+    switch_to_state: '{{ trigger.to_state.attributes.event_type }}'
+    switch_from_state: '{{ trigger.from_state.attributes.event_type }}'
+    switch_id: '{{ trigger.id }}'
+    #    switch_from_ID: '{{ trigger.entity_id }}'
+- choose:
+  - conditions: '{{ switch_to_state == ''initial_press'' }}'
+    sequence:
+    - choose:
+      - conditions: '{{ switch_id == ''B1'' }}'
+        sequence: !input 'button_1_press'
+      - conditions: '{{ switch_id == ''B2'' }}'
+        sequence: !input 'button_2_press'
+      - conditions: '{{ switch_id == ''B3'' }}'
+        sequence: !input 'button_3_press'  
+      - conditions: '{{ switch_id == ''B4'' }}'
+        sequence: !input 'button_4_press'
+
+  - conditions: '{{ switch_to_state == ''repeat'' }}'
+    sequence:
+    - choose:
+      - conditions: '{{ switch_id == ''B1'' }}'
+        sequence: !input 'button_1_repeat'
+      - conditions: '{{ switch_id == ''B2'' }}'
+        sequence: !input 'button_2_repeat'
+      - conditions: '{{ switch_id == ''B3'' }}'
+        sequence: !input 'button_3_repeat'
+      - conditions: '{{ switch_id == ''B4'' }}'
+        sequence: !input 'button_4_repeat'
+
+  - conditions: '{{ switch_to_state == ''long_release'' }}'
+    sequence:
+    - choose:
+      - conditions: '{{ switch_id == ''B1'' }}'
+        sequence: !input 'button_1_long_release'
+      - conditions: '{{ switch_id == ''B2'' }}'
+        sequence: !input 'button_2_long_release'
+      - conditions: '{{ switch_id == ''B3'' }}'
+        sequence: !input 'button_3_long_release'
+      - conditions: '{{ switch_id == ''B4'' }}'
+        sequence: !input 'button_4_long_release'
+
+  - conditions: '{{ switch_to_state == ''short_release'' }}'
+    sequence:
+    - choose:
+      - conditions: '{{ switch_from_state == ''initial_press'' }}'
+        sequence: 
+          - choose:
+            - conditions: '{{ switch_id == ''B1'' }}'
+              sequence: !input 'button_1_short_release'
+            - conditions: '{{ switch_id == ''B2'' }}'
+              sequence: !input 'button_2_short_release'
+            - conditions: '{{ switch_id == ''B3'' }}'
+              sequence: !input 'button_3_short_release'
+            - conditions: '{{ switch_id == ''B4'' }}'
+              sequence: !input 'button_4_short_release'

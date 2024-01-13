@@ -1,68 +1,41 @@
-- id: '1673393658598'
-  alias: Shannon - Open Garage when Arriving Home
-  description: Open Garage when Arriving Home
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.shannons_iphone_icloud3_v3_zone
-    to: Home
-    enabled: true
-  - platform: numeric_state
-    entity_id:
-    - sensor.shannons_iphone_icloud3_v3_home_distance
-    below: 0.15
-  condition:
-  - condition: state
-    entity_id: sensor.shannons_iphone_activity
-    state: Automotive
-  - condition: state
-    entity_id: cover.garage_door
-    state: closed
-  action:
-  - service: cover.open_cover
-    data: {}
-    target:
-      entity_id: cover.garage_door
-  - service: notify.mobile_app_shannons_iphone
-    data:
-      title: A message from future Hubby
-      message: Welcome to our beloved Home beautiful. <3
-  - service: notify.mobile_app_shannons_iphone
-    data:
-      title: A message from Hachi and Bueller
-      message: WE DIDN'T EAT ANYTHING TODAY :D
-  mode: single
 - id: '1683608811710'
   alias: Andy - Open Garage when Arriving Home
   description: Open Garage when Arriving Home
   trigger:
+  - platform: template
+    value_template: '{{states("sensor.andys_iphone_icloud3_v3_zone_distance")  | float
+      <= 0.20}}'
   - platform: state
     entity_id:
-    - sensor.andys_iphone_icloud3_v3_zone_fname
+    - sensor.andys_iphone_icloud3_v3_zone_name
     to: Home
-  - platform: numeric_state
-    entity_id: sensor.andys_iphone_icloud3_v3_home_distance
-    below: 0.1
   condition:
   - condition: state
-    entity_id: sensor.andys_iphone_15_activity
-    state: Automotive
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-  - condition: state
-    entity_id: cover.garage_door
-    state: closed
+    entity_id: input_boolean.andy_driving_flag
+    state: 'on'
+  - condition: not
+    conditions:
+    - condition: time
+      after: '23:00:00'
+      before: 06:00:00
+      weekday:
+      - sun
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+    alias: Make sure it is not between 11pm - 6am
   action:
   - service: cover.open_cover
     data: {}
     target:
       entity_id: cover.garage_door
-  - service: notify.mobile_app_andys_iphone_15
+  - service: notify.mobile_app_andysiphone15_app
     data:
-      title: Welcome home Pops
-      message: Hope your day was well my guy. Come on in.
+      title: Love you boo.
+      message: Come in my Homie. Hope today was well. Let's chill.
   mode: single
 - id: '1689609244173'
   alias: Washer Machine - Wash cycle finish
@@ -79,21 +52,30 @@
         data:
           message: Washer has finished. Get it before it stinks, ew!
           title: Washer Machine Cycle Finished
-      - service: notify.mobile_app_shannons_iphone
+        alias: 'Notify Andy: Wash COMPLETED'
+      - service: notify.mobile_app_shannonsiphone14_iosapp
         data:
-          title: Washer Machine Cycle Finished
-          message: A laundry wash cycle has completed. I suggest you do something
-            about that if it's yours,  sooner than later or else you'll be sad.
+          message: The washing cycle has just finished. Those clothes are sparkling
+            clean but still a bit shy and wet. It’s the perfect time to give them
+            a warm hug in the dryer or let them dance in the fresh air on a clothesline.
+            Whatever you choose, I'm here to remind you and make life a little easier.
+            Let’s turn this chore into a cheer!
+          title: Wash Cycle has COMPLETED!
+        alias: 'Notify Shannon: Wash COMPLETED'
       pre_actions:
       - service: notify.mobile_app_andys_iphone_15
         data:
           title: Washer machine cycle just started
           message: I'll let you know when it's done, sir.
-      - service: notify.mobile_app_shannons_iphone
+        alias: 'Notify Andy: Wash STARTED'
+      - service: notify.mobile_app_shannonsiphone14_iosapp
         data:
-          message: A washer machine cycle has started. I will let you know when it
-            is finished. Love you.
-          title: Hello, Madam,
+          message: Just wanted to let you know that the washing machine has begun
+            its magical journey of cleaning. While I take care of the spin cycles,
+            why not steal some moments together? A good time for a cozy chat or a
+            sweet cup of coffee, perhaps.
+          title: Wash Cycle has STARTED!
+        alias: 'Notify Shannon: Wash STARTED'
 - id: '1689645638650'
   alias: Andy iPhone Alert - Home Assistant Successful Restart Notification
   description: ''
@@ -109,17 +91,22 @@
     input:
       notify_device: c13042b5a1081cf01c5158e2590a125e
 - id: '1692495737792'
-  alias: Andy - Far Away Flag, Turn Off
+  alias: Andy - Far Away Flag, Turn OFF
+  description: ''
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.andys_iphone_icloud3_v3_zone_distance
-    below: 5
+  - platform: template
+    value_template: '{{states("sensor.andys_iphone_icloud3_v3_zone_distance") | float
+      <= 5}}'
   condition:
   - condition: state
     entity_id: sensor.andys_iphone_icloud3_v3_zone_distance
     attribute: from_zone
     state: home
     alias: Confirm Andy ZoneDistance:FromZone is home
+    enabled: false
+  - condition: state
+    entity_id: input_boolean.andy_far_away_flag
+    state: 'on'
   action:
   - alias: 'Andy Far Away Flag: Turn off'
     service: input_boolean.turn_off
@@ -129,17 +116,16 @@
       - input_boolean.andy_far_away_flag
   mode: single
 - id: '1692507094295'
-  alias: Andy - Far Away Flag, Turn On
+  alias: Andy - Far Away Flag, Turn ON
+  description: ''
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.andys_iphone_icloud3_v3_zone_distance
-    above: 5
+  - platform: template
+    value_template: '{{states("sensor.andys_iphone_icloud3_v3_zone_distance") | float
+      > 5}}'
   condition:
   - condition: state
-    entity_id: sensor.andys_iphone_icloud3_v3_zone_distance
-    attribute: from_zone
-    state: home
-    alias: Confirm Andy ZoneDistance:FromZone is home
+    entity_id: input_boolean.andy_far_away_flag
+    state: 'off'
   action:
   - alias: 'Andy Far Away Flag: Turn on'
     service: input_boolean.turn_on
@@ -159,53 +145,20 @@
   - service: input_boolean.turn_on
     entity_id: input_boolean.ha_started_flag
   mode: single
-- id: '1692640124048'
-  alias: Andy - On Dog Walk - Close Garage
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.andys_iphone_icloud3_v3_zone_name
-    to: Away
-    from: Home
-  condition:
-  - condition: state
-    entity_id: input_boolean.ha_started_flag
-    state: 'on'
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-  - condition: numeric_state
-    entity_id: sensor.andys_iphone_icloud3_v3_home_distance
-    above: 0.1
-    enabled: false
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.andys_iphone_bssid_2
-      state: 40:9:4a:1:6c:96
-    enabled: false
-  - condition: state
-    entity_id: cover.garage_door
-    state: open
-  action:
-  - service: script.1692640751447
-    data: {}
-  mode: single
 - id: '1692654415536'
-  alias: Shannon - Far Away Flag, Turn Off
+  alias: Shannon - Far Away Flag, Turn OFF
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.shannons_iphone_icloud3_v3_zone_distance
+    entity_id:
+    - sensor.shannons_iphone14_icloud3_v3_zone_distance
     below: 5
   condition:
-  - condition: state
-    entity_id: sensor.shannons_iphone_icloud3_v3_zone_distance
+  - alias: Confirm Shannon ZoneDistance:FromZone is not home
+    condition: state
+    entity_id: sensor.shannons_iphone14_icloud3_v3_zone_distance
     attribute: from_zone
     state: home
-    alias: Confirm Shannon ZoneDistance:FromZone is not home
   action:
   - service: input_boolean.turn_off
     alias: 'Shannon Far Away Flag: Turn off'
@@ -214,22 +167,23 @@
       entity_id: input_boolean.shannon_far_away_flag
   mode: single
 - id: '1692654492984'
-  alias: Shannon - Far Away Flag, Turn On
+  alias: Shannon - Far Away Flag, Turn ON
   description: ''
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.shannons_iphone_icloud3_v3_zone_distance
+  - alias: When Shannon Zone Distance is above 5 mi
+    platform: numeric_state
+    entity_id:
+    - sensor.shannons_iphone14_icloud3_v3_zone_distance
     above: 5
-    alias: When Shannon Zone Distance is above 5 mi
   condition:
-  - condition: state
-    entity_id: sensor.shannons_iphone_icloud3_v3_zone_distance
+  - alias: Confirm Shannon ZoneDistance:FromZone is not home
+    condition: state
+    entity_id: sensor.shannons_iphone14_icloud3_v3_zone_distance
     attribute: from_zone
     state: home
-    alias: Confirm Shannon ZoneDistance:FromZone is not home
   action:
   - service: input_boolean.turn_on
-    alias: 'Andy Far Away Flag: Turn on'
+    alias: 'Shannon Far Away Flag: Turn on'
     data: {}
     target:
       entity_id: input_boolean.shannon_far_away_flag
@@ -244,10 +198,12 @@
       - update.home_assistant_core_update
       - update.home_assistant_operating_system_update
       - update.home_assistant_supervisor_update
-      mobile_app_device: d756f8bb367b2b5692b4b3c309ef1e59
+      mobile_app_device: 1bad7ecca6027f6be716bd33bbcd5d3d
       only_after: 06:00:00
       only_before: '20:00:00'
-      mobile_app_device_2: c13042b5a1081cf01c5158e2590a125e
+      mobile_app_device_2: 1bad7ecca6027f6be716bd33bbcd5d3d
+      send_to_ha: false
+      reminder_hours: '12'
 - id: '1696208711501'
   alias: Time to Feed The Dogs
   description: ''
@@ -256,48 +212,17 @@
     at: '19:00:00'
   condition: []
   action:
-  - service: tts.cloud_say
+  - service: media_player.volume_set
     data:
-      cache: true
-      message: 'Alert! Bueller and Hachi are hungry. Please, feed them or else they
-        will wreck your place. Well, they might do that anyway. You have been warned. '
-      entity_id: media_player.kitchen
-  mode: single
-- id: '1699585606904'
-  alias: Cruise Ship Announcement
-  description: ''
-  trigger: []
-  condition: []
-  action:
-  - service: media_player.play_media
+      volume_level: 0.78
     target:
       entity_id: media_player.kitchen_homepod_mini
-    data:
-      media_content_id: media-source://media_source/local/Ship Announcement.mp3
-      media_content_type: audio/mpeg
-    metadata:
-      title: Ship Announcement.mp3
-      thumbnail:
-      media_class: music
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://media_source
   - service: tts.cloud_say
     data:
-      entity_id: media_player.kitchen_homepod_mini
-      message: "Attention all delightful passengers, this is your Captain speaking.\n\nAs
-        we navigate these enchanting waters, I must share a secret as vast as the
-        sea itself. There’s someone special among us who has commandeered the ship
-        of my heart with her charm and grace.\n\nTo the one who makes every sunset
-        more radiant and every horizon a promise of adventure, know that my love for
-        you is as endless as the ocean and as timeless as the tides.\n\nWith you,
-        every journey is a fairytale. Here’s to our voyage of love, may it be as magical
-        and wondrous as the happiest place on earth.\n\nThank you for embarking on
-        this journey with me. Now, let's make waves of joy and cruise into a future
-        filled with love.\n\nCaptain over and out. ❤️\U0001F6A2"
       cache: true
+      message: 'Alert! Bueller and Hotchee are hungry. Please, feed them or else they
+        will wreck your place. Well, they might do that anyway. You have been warned. '
+      entity_id: media_player.kitchen_homepod_mini
   mode: single
 - id: '1699678247718'
   alias: Hue play bars off when ATV turn off
@@ -305,7 +230,7 @@
   trigger:
   - platform: state
     entity_id:
-    - media_player.theater_appletv
+    - media_player.theater_appletv_4k
     to: standby
     for:
       hours: 0
@@ -313,7 +238,7 @@
       seconds: 5
   - platform: state
     entity_id:
-    - media_player.theater_appletv
+    - media_player.theater_appletv_4k
     to: 'off'
     for:
       hours: 0
@@ -349,4 +274,170 @@
     data:
       broadcast_port: 9
       mac: b4-2e-99-4b-72-3b
+  mode: single
+- id: '1701389767678'
+  alias: Shannon - Open Garage when Arriving Home
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{states("sensor.shannons_iphone14_icloud3_v3_zone_distance")  |
+      float <= 0.20}}'
+  - platform: state
+    entity_id:
+    - sensor.shannons_iphone14_icloud3_v3_zone_name
+    to: Home
+  condition:
+  - condition: state
+    entity_id: input_boolean.shannon_driving_flag
+    state: 'on'
+  - condition: not
+    conditions:
+    - condition: time
+      after: '23:00:00'
+      before: 06:00:00
+      weekday:
+      - sun
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+    alias: Make sure it is not between 11pm - 6am
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garage_door
+    data: {}
+  - service: notify.mobile_app_shannonsiphone14_iosapp
+    data:
+      title: Hey Honey
+      message: I love you so much! I hope your first day back after the Holidays was
+        amazing! Come on in. Bueller is awaiting your arrival. Hachi is already by
+        your side because she's crazy fasto burrito
+  mode: single
+- id: '1701403399257'
+  alias: Hue, Friends Of Hue switch, 4 button, all functions
+  description: ''
+  use_blueprint:
+    path: MrBunbao/hue_dimmer_switch.yaml
+    input:
+      hue-switch-button1:
+      - event.hue_dimmer_switch_2_button_1
+      hue-switch-button2:
+      - event.hue_dimmer_switch_2_button_2
+      hue-switch-button3:
+      - event.hue_dimmer_switch_2_button_3
+      hue-switch-button4:
+      - event.hue_dimmer_switch_2_button_4
+      button_1_short_release: []
+      button_2_short_release: []
+      button_4_short_release: []
+      button_1_press:
+      - service: light.toggle
+        target:
+          entity_id: light.bedroom_ceiling_fan_lights
+        data:
+          brightness_pct: 100
+      button_4_press:
+      - service: switch.toggle
+        data: {}
+        target:
+          entity_id: switch.bedroom_fairy_lights
+      button_2_press:
+      - service: light.toggle
+        target:
+          entity_id: light.bedroom_ceiling_fan_lights
+        data: {}
+      - service: switch.toggle
+        target:
+          entity_id: switch.bedroom_fairy_lights
+        data: {}
+      button_3_press:
+      - service: light.turn_on
+        target:
+          entity_id: light.bedroom_ceiling_fan_lights
+        data:
+          brightness_step_pct: -25
+- id: '1701968903041'
+  alias: Andy - Driving Flag Turn ON
+  trigger:
+  - platform: template
+    value_template: '{{states("sensor.andys_iphone_icloud3_v3_zone_distance") | float
+      > 2}}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.andy_far_away_flag
+    state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.andy_driving_flag
+  mode: single
+- id: '1701969511597'
+  alias: Andy - Driving Flag Turn OFF
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - device_tracker.andys_iphone_icloud3_v3
+    to: home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.andy_driving_flag
+    state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id:
+      - input_boolean.andy_driving_flag
+      device_id: []
+      area_id: []
+    data: {}
+  mode: single
+- id: '1701993016491'
+  alias: Shannon - Driving Flag Turn OFF
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - device_tracker.shannons_iphone14_icloud3_v3
+    to: home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.shannon_driving_flag
+    state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    target:
+      device_id: []
+      area_id: []
+      entity_id: input_boolean.shannon_driving_flag
+    data: {}
+  mode: single
+- id: '1701993119197'
+  alias: Shannon - Driving Flag Turn ON
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{states("sensor.shannons_iphone14_icloud3_v3_zone_distance")
+      | float > 2}}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.shannon_far_away_flag
+    state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.shannon_driving_flag
   mode: single

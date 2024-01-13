@@ -26,13 +26,3 @@ toggle_garage:
         message: Opening garage door via ActionButton
   mode: single
   icon: mdi:garage-alert-variant
-toggle_tv_power:
-  alias: (via ActionButton) Toggle TV Power
-  sequence:
-  - service: remote.toggle
-    data: {}
-    target:
-      entity_id:
-      - remote.theater_appletv_remote
-  mode: single
-  icon: mdi:remote-tv
