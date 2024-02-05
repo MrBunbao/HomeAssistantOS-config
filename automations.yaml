@@ -311,10 +311,10 @@
     data: {}
   - service: notify.mobile_app_shannonsiphone14_iosapp
     data:
-      title: Hey Honey
-      message: I love you so much! I hope your first day back after the Holidays was
-        amazing! Come on in. Bueller is awaiting your arrival. Hachi is already by
-        your side because she's crazy fasto burrito
+      message: You are the Apple to my Pie. Did I say that right? Mucho missed you.
+        Might need to walk the doggos but i want to hear all about your day!  And
+        thank you for the clock. I can’t stop looking at it. I need lighting for it!
+      title: Welcome home, Sweetie!
   mode: single
 - id: '1701403399257'
   alias: Hue, Friends Of Hue switch, 4 button, all functions
