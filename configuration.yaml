@@ -32,7 +32,7 @@ wake_on_lan:
 switch:
   - platform: wake_on_lan
     mac: b4:2e:99:4b:72:3b
-    host: 192.168.1.54
+    host: 192.168.1.125
     name: "AndyHomePC"
 
 ffmpeg:
